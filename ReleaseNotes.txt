@@ -1,0 +1,7 @@
+v1.0.1
+- An initial deployment of the app
+- Set to gpt-4.0
+- powershell file is created
+- requirements.txt is created
+- readme.md is created
+- virtual env is created

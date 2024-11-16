@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Question Logger</title>
+        <style>
+            body {
+                font-family: Calibri, sans-serif;
+                margin: 20px;
+            }
+            h1 {
+                text-align: center;
+            }
+            form {
+                margin-bottom: 20px;
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            input[type="text"] {
+                width: calc(100% - 22px);
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            input[type="submit"] {
+                padding: 10px 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+            #conversation {
+                border: 1px solid #ccc;
+                padding: 10px;
+                max-height: 800px;
+                overflow-y: auto;
+            }
+            p {
+                margin: 5px 0;
+            }
+            .user-question {
+                color: darkgreen;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Amin's Bot!</h1>
+        <form onsubmit="return submitInput()">
+            <label for="input">Ask a question or enter a response:</label>
+            <input type="text" id="input" name="input" required>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="conversation"></div>
+
+        <script>
+            function submitInput() {
+                var input = document.getElementById('input').value;
+                var conversationDisplay = document.getElementById('conversation');
+                conversationDisplay.innerHTML += '<p class="user-question">User: ' + input;
+                fetch('/store_input/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'input=' + encodeURIComponent(input)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    conversationDisplay.innerHTML += '<p>Bot: ' + data.message + '</p><br>';
+                    conversationDisplay.scrollTop = conversationDisplay.scrollHeight;
+                })
+                .catch(error => console.error('Error:', error));
+                document.getElementById('input').value = '';
+                return false;
+            }
+        </script>
+    </body>
+    </html>

@@ -1,0 +1,2 @@
+You are a helpful assistant.
+You must answer in plain readable format and print the answer.
